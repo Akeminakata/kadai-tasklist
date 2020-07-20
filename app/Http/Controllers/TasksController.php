@@ -83,6 +83,12 @@ class TasksController extends Controller
         return view('tasks.show', [
             'task' => $task,
         ]);
+        
+       //認証済みユーザ（閲覧者）がその投稿の所有者でない場合は、リダイレクトする
+        if (\Auth::id() !== $task->user_id) {
+            return redirect('/');
+             
+        }
     }
 
     /**
@@ -99,6 +105,11 @@ class TasksController extends Controller
         return view('tasks.edit', [
             'task' => $task,
         ]);
+        
+         //認証済みユーザ（閲覧者）がその投稿の所有者でない場合は、リダイレクトする
+        if (\Auth::id() !== $task->user_id) {
+            return redirect('/');
+        }
     }
 
     /**
@@ -122,9 +133,12 @@ class TasksController extends Controller
         $task->status = $request->status;    // 追加
         $task->content = $request->content;
         $task->save();
-
-        // トップページへリダイレクトさせる
-        return redirect('/');
+        
+         //認証済みユーザ（閲覧者）がその投稿の所有者でない場合は、リダイレクトする
+        if (\Auth::id() !== $task->user_id) {
+            return redirect('/');
+        }
+      
     }
 
     /**
