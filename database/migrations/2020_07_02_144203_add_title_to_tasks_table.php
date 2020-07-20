@@ -16,6 +16,10 @@ class AddTitleToTasksTable extends Migration
         Schema::table('tasks', function (Blueprint $table) {
             //追加
              $table->string('status',10);
+             $table->unsignedBigInteger('user_id');
+             
+             // 外部キー制約
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
